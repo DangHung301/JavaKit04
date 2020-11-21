@@ -5,13 +5,29 @@
  */
 package Bai5;
 
+import Bai1.SinhVien;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author hp
  */
-public class Form extends javax.swing.JFrame {
+public class Form extends javax.swing.JFrame implements Serializable {
+
+    ArrayList<GiangVien> listGiangViens = new ArrayList<>();
 
     /**
+     *
      * Creates new form Form
      */
     public Form() {
@@ -27,7 +43,7 @@ public class Form extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
+        butGrGioiTinh = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -37,14 +53,14 @@ public class Form extends javax.swing.JFrame {
         txtMaGiangVien = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txtDiaChi = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         cbKhoa = new javax.swing.JComboBox<>();
         butLuuTru = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        butReset = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
+        rdNam = new javax.swing.JRadioButton();
+        rdNu = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,14 +98,6 @@ public class Form extends javax.swing.JFrame {
 
         txtDiaChi.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jRadioButton1.setText("Nam");
-
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jRadioButton2.setText("Nữ");
-
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setText("Giới tính :");
 
@@ -101,11 +109,29 @@ public class Form extends javax.swing.JFrame {
 
         butLuuTru.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         butLuuTru.setText("Lưu Trữ");
+        butLuuTru.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butLuuTruActionPerformed(evt);
+            }
+        });
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton2.setText("Clear");
+        butReset.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        butReset.setText("Reset");
+        butReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butResetActionPerformed(evt);
+            }
+        });
 
         jLabel7.setIcon(new javax.swing.ImageIcon("C:\\Users\\hp\\Pictures\\Sinh nhật đội 5 tuổi\\1-1510967806416.jpg")); // NOI18N
+
+        butGrGioiTinh.add(rdNam);
+        rdNam.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        rdNam.setText("Nam ");
+
+        butGrGioiTinh.add(rdNu);
+        rdNu.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        rdNu.setText("Nữ");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -129,18 +155,20 @@ public class Form extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addComponent(jLabel6))
-                        .addGap(84, 84, 84)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jRadioButton1)
-                                .addGap(50, 50, 50)
-                                .addComponent(jRadioButton2))
-                            .addComponent(cbKhoa, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(84, 84, 84)
+                                .addComponent(cbKhoa, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(87, 87, 87)
+                                .addComponent(rdNam)
+                                .addGap(37, 37, 37)
+                                .addComponent(rdNu))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(132, 132, 132)
                         .addComponent(butLuuTru)
                         .addGap(69, 69, 69)
-                        .addComponent(jButton2)))
+                        .addComponent(butReset)))
                 .addGap(88, 88, 88))
         );
         jPanel2Layout.setVerticalGroup(
@@ -158,11 +186,11 @@ public class Form extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                .addGap(28, 28, 28)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(rdNam)
+                    .addComponent(rdNu))
                 .addGap(20, 20, 20)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel6)
@@ -170,7 +198,7 @@ public class Form extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(butLuuTru)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(butReset, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 84, Short.MAX_VALUE))
         );
@@ -192,6 +220,55 @@ public class Form extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void butLuuTruActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butLuuTruActionPerformed
+        // TODO add your handling code here:
+        String hoTen = txtHoTen.getText();
+        String maGiangVien = txtMaGiangVien.getText();
+        String diaChi = txtDiaChi.getText();
+
+        String gioiTinh = rdNam.isSelected() ? "nam" : "nữ";
+        String khoa = cbKhoa.getSelectedItem().toString();
+
+        GiangVien giangVien = new GiangVien(hoTen, maGiangVien, diaChi, gioiTinh, khoa);
+        listGiangViens.add(giangVien);
+
+        try {
+            FileOutputStream fos = new FileOutputStream("giangvien.dat");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+            oos.writeObject(listGiangViens); // ghi cả list
+            oos.close();
+            fos.close();
+            JOptionPane.showMessageDialog(this, "Ghi file thành công");
+        } catch (Exception e) {
+        }
+
+        try {
+            FileInputStream fis = new FileInputStream("giangvien.dat");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            
+            System.out.println("========================================");
+            ArrayList<GiangVien> tmp = (ArrayList<GiangVien>) ois.readObject();
+            tmp.forEach(obj -> {
+            obj.xuat();
+            });
+
+            ois.close();
+            fis.close();
+            
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_butLuuTruActionPerformed
+
+    private void butResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butResetActionPerformed
+        // TODO add your handling code here:
+        txtHoTen.setText("");
+        txtDiaChi.setText("");
+        txtMaGiangVien.setText("");
+        cbKhoa.setSelectedIndex(0);
+        butGrGioiTinh.clearSelection();
+    }//GEN-LAST:event_butResetActionPerformed
 
     /**
      * @param args the command line arguments
@@ -229,10 +306,10 @@ public class Form extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup butGrGioiTinh;
     private javax.swing.JButton butLuuTru;
-    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton butReset;
     private javax.swing.JComboBox<String> cbKhoa;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -242,8 +319,8 @@ public class Form extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton rdNam;
+    private javax.swing.JRadioButton rdNu;
     private javax.swing.JTextField txtDiaChi;
     private javax.swing.JTextField txtHoTen;
     private javax.swing.JTextField txtMaGiangVien;
